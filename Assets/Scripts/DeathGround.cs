@@ -5,15 +5,34 @@ using UnityEngine;
 public class DeathGround : MonoBehaviour
 {
     public Transform spawnPoint;
+    public GameObject player;
+    public int teleportPoint = 3;
 
-    private void OnTriggerStay(Collider other)
+    public void Start()
     {
-        if (other.gameObject.CompareTag("DeathGround"))
+        player = GameObject.FindWithTag("Player");
+    }
+
+    public void Update()
+    {
+        if (player.transform.position.y <= teleportPoint)
         {
             Debug.Log("Yeet");
-            transform.position = spawnPoint.transform.position;
+            Debug.Log(transform.position);
+            gameObject.transform.position = spawnPoint.transform.position;
+            Debug.Log(transform.position);
         }
     }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("DeathGround"))
+    //    {
+    //        Debug.Log("Yeet");
+    //        Debug.Log(transform.position);
+    //        gameObject.transform.position = spawnPoint.transform.position;
+    //        Debug.Log(transform.position);
+    //    }
+    //}
     //private void Update()
     //{
     //    if (transform.position.y <= 2)
