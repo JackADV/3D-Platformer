@@ -11,6 +11,8 @@ public class Agent : MonoBehaviour
     public Vector3 velocity;
     protected Steering steering;
     private Rigidbody rigid;
+    public float maxRotation;
+    public float maxAngularAccel;
     // Start is called before the first frame update
     void Start()
     {
