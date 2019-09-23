@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(Rigidbody))]
+//[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
     #region Variables
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
     //References:
     private CharacterController controller;
-    private Rigidbody rigid;
+    //private Rigidbody rigid;
     public GameObject camera;
     public LayerMask ground;
 
@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
     {
         canMove = true;
         controller = gameObject.GetComponent<CharacterController>();
-        rigid = gameObject.GetComponent<Rigidbody>();
+        //rigid = gameObject.GetComponent<Rigidbody>();
         camera = GameObject.FindGameObjectWithTag("PlayerHead");
     }
 
@@ -75,22 +75,25 @@ public class Player : MonoBehaviour
     {
         if (freezeMove == false) //canMove check
         {
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            moveDirection = transform.TransformDirection(moveDirection);
-            if (Input.GetKey(KeyCode.LeftShift)) //Checks if the player is sprinting and applies extra force.
+            if (isGrounded())
             {
-                moveDirection.x *= sprintSpeed;
-                moveDirection.y *= sprintSpeed;
-            }
-            else
-            {
-                //moveDirection.x *= speed;
-               // moveDirection.y *= speed;
-            }
+                moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                moveDirection = transform.TransformDirection(moveDirection);
+                if (Input.GetKey(KeyCode.LeftShift)) //Checks if the player is sprinting and applies extra force.
+                {
+                    moveDirection.x *= sprintSpeed;
+                    moveDirection.y *= sprintSpeed;
+                }
+                else
+                {
+                    moveDirection.x *= speed;
+                    moveDirection.y *= speed;
+                }
 
-            if (isGrounded() && Input.GetButtonDown("Jump"))
-            {
-                moveDirection.y += jumpSpeed;
+                if (isGrounded() && Input.GetButtonDown("Jump"))
+                {
+                    moveDirection.y += jumpSpeed;
+                }
             }
             moveDirection.y -= gravity * 2 * Time.deltaTime;
             controller.Move(moveDirection * Time.deltaTime);
