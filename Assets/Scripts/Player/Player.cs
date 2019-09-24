@@ -8,12 +8,16 @@ public class Player : MonoBehaviour
     //Movement:
     public Vector3 moveDirection; 
     public float jumpSpeed = 8;
-    public float speed = 5;
-    public float sprintSpeed = 10;
+    public float speed = 10;
+    public float sprintSpeed = 15;
     public float gravity = 20;
+    public float appliedGravity;
+    public float gravityIncreaseTimer;
     public Transform spawnPoint;
     public int teleportPoint = 3;
 
+    public float increaseTimer = 0;
+    public bool canIncrease = false;
     public static bool canMove = true;
     public static bool freezeCamera = false;
     public static bool freezeMove = false;
@@ -84,9 +88,29 @@ public class Player : MonoBehaviour
             if (isGrounded())
             {
                 moveDirection.y = 0;
-                if (Input.GetButtonDown("Jump"))
+                gravityIncreaseTimer = 0;
+                appliedGravity = gravity;
+                if (Input.GetButton("Jump") && canIncrease == true && sprintSpeed <= 35)
                 {
                     moveDirection.y += jumpSpeed;
+                    increaseTimer = 0;
+                    sprintSpeed *= 1.2f;
+                    canIncrease = true;
+                }
+                else if (Input.GetButton("Jump"))
+                {
+                    moveDirection.y += jumpSpeed;
+                    increaseTimer = 0;
+                    canIncrease = true;
+                }
+            }
+            else
+            {
+                gravityIncreaseTimer += Time.deltaTime;
+                if (gravityIncreaseTimer >= 0.4f && appliedGravity <= 50)
+                {
+                    appliedGravity = gravity + (gravityIncreaseTimer * 16f);
+                    Debug.Log(appliedGravity);
                 }
             }
             if (Input.GetKey(KeyCode.LeftShift)) //Checks if the player is sprinting and applies extra force.
@@ -100,10 +124,21 @@ public class Player : MonoBehaviour
                 moveDirection.z *= speed;
             }
 
-            moveDirection.y -= gravity * Time.deltaTime;
+
+            moveDirection.y -= appliedGravity * Time.deltaTime;
             controller.Move(moveDirection * Time.deltaTime);
         }
-        
+
+        if (canIncrease == true && increaseTimer >= 0 && isGrounded())
+        {
+            increaseTimer += Time.deltaTime;
+            if (increaseTimer >= 0.1f)
+            {
+                sprintSpeed = 15;
+                increaseTimer = 0;
+                canIncrease = false;
+            }
+        }
     }
     #endregion
 
