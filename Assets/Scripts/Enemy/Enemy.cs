@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public Transform target;
     public int health = 100;
-    public int enemyDamage = 10, killValue = 1;
+    public int enemyDamage = 10;
     public float speed = 10f;
     public float radius = 20f;
 
@@ -29,8 +29,7 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
-            Debug.Log("Kill");
-           // KillCount.killCount += killValue;
+            Debug.Log("Enemy has been killed");
         }
     }
 }
