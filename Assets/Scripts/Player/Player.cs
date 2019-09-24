@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     public float speed = 5;
     public float sprintSpeed = 10;
     public float gravity = 20;
+    public Transform spawnPoint;
+    public int teleportPoint = 3;
 
     public static bool canMove = true;
     public static bool freezeCamera = false;
@@ -69,33 +71,36 @@ public class Player : MonoBehaviour
             MouseMovement();
         }
 
+        BelowGround();
     }
 
     public void Movement()
     {
         if (freezeMove == false) //canMove check
         {
+            moveDirection.z = Input.GetAxis("Vertical");
+            moveDirection.x = Input.GetAxis("Horizontal");
+            moveDirection = transform.TransformDirection(moveDirection);
             if (isGrounded())
             {
-                moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-                moveDirection = transform.TransformDirection(moveDirection);
-                if (Input.GetKey(KeyCode.LeftShift)) //Checks if the player is sprinting and applies extra force.
-                {
-                    moveDirection.x *= sprintSpeed;
-                    moveDirection.y *= sprintSpeed;
-                }
-                else
-                {
-                    moveDirection.x *= speed;
-                    moveDirection.y *= speed;
-                }
-
-                if (isGrounded() && Input.GetButtonDown("Jump"))
+                moveDirection.y = 0;
+                if (Input.GetButtonDown("Jump"))
                 {
                     moveDirection.y += jumpSpeed;
                 }
             }
-            moveDirection.y -= gravity * 2 * Time.deltaTime;
+            if (Input.GetKey(KeyCode.LeftShift)) //Checks if the player is sprinting and applies extra force.
+            {
+                moveDirection.x *= sprintSpeed;
+                moveDirection.z *= sprintSpeed;
+            }
+            else
+            {
+                moveDirection.x *= speed;
+                moveDirection.z *= speed;
+            }
+
+            moveDirection.y -= gravity * Time.deltaTime;
             controller.Move(moveDirection * Time.deltaTime);
         }
         
@@ -114,6 +119,18 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
+
+    public void BelowGround()
+    {
+        if (gameObject.transform.position.y <= teleportPoint)
+        {
+            Debug.Log("Yeet");
+            Debug.Log(transform.position);
+            gameObject.transform.position = spawnPoint.transform.position;
+            Debug.Log("Attempted");
+            Debug.Log(transform.position);
+        }
+    }
 
     private void OnDrawGizmos()
     {
