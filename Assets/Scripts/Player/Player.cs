@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapBox(transform.localPosition + groundDistance, groundedOverlay, Quaternion.identity, ground); //Creates a overlap box to check whether the player is grounded.
         for (int i = 0; i < hitColliders.Length; i++)
         {
-            if (hitColliders[i].gameObject.layer == ground) //Checks each gameObject that the collider hits to see if it is layered as "ground".
+            if (hitColliders[i].gameObject.layer == 9) //Checks each gameObject that the collider hits to see if it is layered as "ground".
             {
                 return true;
             }
@@ -93,14 +93,14 @@ public class Player : MonoBehaviour
                 moveDirection.y = 0;
                 gravityIncreaseTimer = 0;
                 appliedGravity = gravity;
-                if (Input.GetButton("Jump") && canIncrease == true && sprintSpeed <= 35) //Checks if the player can Increase their sprintSpeed and is attempting to jump to apply extra velocity.
+                if (Input.GetButtonDown("Jump") && canIncrease == true && sprintSpeed <= 35) //Checks if the player can Increase their sprintSpeed and is attempting to jump to apply extra velocity.
                 {
                     moveDirection.y += jumpSpeed;
                     increaseTimer = 0;
                     sprintSpeed *= 1.2f;
                     canIncrease = true;
                 }
-                else if (Input.GetButton("Jump")) //Defaults back to default jump.
+                else if (Input.GetButtonDown("Jump")) //Defaults back to default jump.
                 {
                     moveDirection.y += jumpSpeed;
                     increaseTimer = 0;
