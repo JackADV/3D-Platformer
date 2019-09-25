@@ -9,7 +9,7 @@ public class Agent : MonoBehaviour
     public float orientation;
     public float rotation;
     public Vector3 velocity;
-    protected Steering steering;
+    public Steering steering;
     private Rigidbody rigid;
     public float maxRotation;
     public float maxAngularAccel;

@@ -15,13 +15,5 @@ public class Steering
         angular = 0.0f;
         linear = new Vector3();
     }
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+   
 }
