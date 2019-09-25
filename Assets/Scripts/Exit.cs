@@ -46,6 +46,7 @@ public class Exit : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         // Plus curent scene by 1
         int nextScene = currentScene.buildIndex + 1;
+        
         // Load that scene!
         SceneManager.LoadScene(nextScene);
         // Print which scene was loaded
