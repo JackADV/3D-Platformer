@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
                 if (gravityIncreaseTimer >= 0.4f && appliedGravity <= 50)
                 {
                     appliedGravity = gravity + (gravityIncreaseTimer * 16f);
-                    Debug.Log(appliedGravity);
+                    //Debug.Log(appliedGravity);
                 }
             }
             if (Input.GetKey(KeyCode.LeftShift)) //Checks if the player is sprinting and applies extra force.

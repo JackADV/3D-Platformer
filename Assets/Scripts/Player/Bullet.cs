@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     public float speed = 10f;
     public GameObject effectsPrefab;
     public Transform line;
+    public int damage = 5;
 
     private Rigidbody rigid;
 
@@ -27,11 +28,12 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider col)
+    public void OnTriggerEnter(Collider other)
     {
-        // ContactPoint contact = col.contacts[0];
-        // Instantiate(effectsPrefab, contact.point, Quaternion.LookRotation(contact.normal));
-        // Destroy bullet
+        if (other.tag == "Enemy")
+        {
+            other.GetComponent<EnemyHealth>().takeDamage(damage);
+        }
         Destroy(gameObject);
     }
 
